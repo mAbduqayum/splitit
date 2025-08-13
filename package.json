@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "rm -rf .angular/ && ng serve --port 5500",
+    "start": "rm -rf .angular/ && ng serve --port 5544",
     "build": "ng build --verbose",
+    "gh-build": "ng build --configuration=production --base-href=/splitit/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "biome:lint": "biome lint .",
