@@ -28,6 +28,15 @@ export class UsersService {
 		});
 	}
 
+	updateUser(userId: number, newName: string) {
+		this.users.update((users) => {
+			newName = newName.trim();
+			return users.map((user) =>
+				user.id === userId ? { ...user, name: newName } : user,
+			);
+		});
+	}
+
 	#syncUsers(users: User[]) {
 		localStorage.setItem("users", JSON.stringify(users));
 	}

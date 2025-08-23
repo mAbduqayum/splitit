@@ -1,28 +1,24 @@
-<div class="users-container">
-  <section class="add-user">
-    <h2>Add User</h2>
-    <form [formGroup]="form" (ngSubmit)="addUser()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input 
-          id="name" 
-          type="text" 
-          formControlName="name"
-          placeholder="Enter user name"
-        />
-        @if (form.get('name')?.invalid && form.get('name')?.touched) {
-          <span class="error">Name is required</span>
-        }
-      </div>
-      <button 
-        type="submit" 
-        appBtn="primary"
-        [disabled]="form.invalid"
-      >
-        Add User
-      </button>
-    </form>
-  </section>
-
-  <app-users-list (removeUser)="removeUser($event)" />
-</div>
+<section class="add-user">
+  <h2>Add User</h2>
+  <form [formGroup]="form" (ngSubmit)="addUser()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input 
+        id="name" 
+        type="text" 
+        formControlName="name"
+        placeholder="Enter user name"
+      />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <span class="error">Name is required</span>
+      }
+    </div>
+    <button 
+      type="submit" 
+      appBtn="primary"
+      [disabled]="form.invalid"
+    >
+      Add User
+    </button>
+  </form>
+</section>

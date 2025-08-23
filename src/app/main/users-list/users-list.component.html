@@ -6,13 +6,34 @@
     <ul>
       @for (user of users(); track user.id) {
         <li>
-          <span class="user-name">{{ user.name }}</span>
-          <button 
-            appBtn="danger"
-            (click)="onRemoveUser(user.id)"
-          >
-            Delete
-          </button>
+          @if (editingUserId() === user.id) {
+            <input 
+              type="text" 
+              [(ngModel)]="editingUserName"
+              (ngModelChange)="updateUser(user.id)"
+              (blur)="stopEdit()"
+              (keyup.escape)="stopEdit()"
+              (keyup.enter)="stopEdit()"
+              class="edit-input"
+              placeholder="Enter new name"
+            />
+          } @else {
+            <span class="user-name" (dblclick)="startEdit(user.id, user.name)">{{ user.name }}</span>
+          }
+          <div class="user-actions">
+            <button 
+              appBtn="info"
+              (click)="startEdit(user.id, user.name)"
+            >
+              Edit
+            </button>
+            <button 
+              appBtn="danger"
+              (click)="onRemoveUser(user.id)"
+            >
+              Delete
+            </button>
+          </div>
         </li>
       }
     </ul>
