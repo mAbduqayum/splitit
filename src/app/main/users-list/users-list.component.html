@@ -1,0 +1,20 @@
+<section class="users-list">
+  <h2>Users List</h2>
+  @if (users().length === 0) {
+    <p class="no-users">No users yet. Add your first user above!</p>
+  } @else {
+    <ul>
+      @for (user of users(); track user.id) {
+        <li>
+          <span class="user-name">{{ user.name }}</span>
+          <button 
+            appBtn="danger"
+            (click)="onRemoveUser(user.id)"
+          >
+            Delete
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</section>
