@@ -1,4 +1,4 @@
-.add-user {
+.add-item {
 	background: #f8f9fa;
 	border-radius: 8px;
 	padding: 1.5rem;
@@ -12,13 +12,25 @@
 	form {
 		display: flex;
 		gap: 1rem;
-		align-items: flex-start;
+		align-items: flex-end;
+		flex-wrap: nowrap;
 
 		.form-group {
-			flex: 1;
 			display: flex;
 			flex-direction: column;
 			gap: 0.5rem;
+
+			&.name-group {
+				flex: 1;
+			}
+
+			&.quantity-group {
+				width: 100px;
+			}
+
+			&.price-group {
+				width: 120px;
+			}
 
 			label {
 				color: #555;
@@ -50,15 +62,23 @@
 		}
 
 		button[type="submit"] {
-			margin-top: 1.75rem;
+			white-space: nowrap;
+			padding: 0.75rem 1rem;
 		}
 	}
 }
 
 @media (max-width: 600px) {
-	.add-user {
+	.add-item {
 		form {
 			flex-direction: column;
+
+			.form-group {
+				&.quantity-group,
+				&.price-group {
+					width: 100%;
+				}
+			}
 
 			button[type="submit"] {
 				margin-top: 1rem;

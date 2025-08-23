@@ -1,7 +1,4 @@
 .users-list {
-	max-width: 800px;
-	margin: 0 auto 2rem;
-	
 	h2 {
 		margin: 0 0 1.5rem 0;
 		color: #333;
@@ -25,7 +22,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-            column-gap: .5rem;
+			column-gap: 0.5rem;
 			padding: 1rem;
 			background: white;
 			border: 1px solid #e0e0e0;
@@ -47,7 +44,7 @@
 			.edit-input {
 				flex: 1;
 				padding: 0.5rem;
-				border: 1px solid #4CAF50;
+				border: 1px solid #4caf50;
 				border-radius: 4px;
 				font-size: 1rem;
 				outline: none;

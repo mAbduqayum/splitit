@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import {
 	FormBuilder,
 	FormControl,
@@ -12,7 +12,6 @@ import { User, UsersService } from "../../services/users.service";
 	imports: [ReactiveFormsModule, ButtonDirective],
 	templateUrl: "./users.component.html",
 	styleUrl: "./users.component.css",
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersComponent {
 	service = inject(UsersService);

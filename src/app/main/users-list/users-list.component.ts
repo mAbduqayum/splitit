@@ -1,10 +1,9 @@
 import {
 	afterNextRender,
-	ChangeDetectionStrategy,
 	Component,
 	computed,
-	inject,
 	Injector,
+	inject,
 	signal,
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
@@ -16,7 +15,6 @@ import { UsersService } from "../../services/users.service";
 	imports: [ButtonDirective, FormsModule],
 	templateUrl: "./users-list.component.html",
 	styleUrl: "./users-list.component.css",
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersListComponent {
 	service = inject(UsersService);
