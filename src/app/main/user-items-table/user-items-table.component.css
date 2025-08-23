@@ -16,78 +16,6 @@
 		}
 	}
 
-	.add-forms-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.5);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		z-index: 1000;
-
-		.add-user-modal, .add-item-modal {
-			background: white;
-			border-radius: 12px;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-			max-width: 500px;
-			width: 90%;
-			max-height: 80%;
-			overflow-y: auto;
-
-			.modal-header {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding: 1.5rem;
-				border-bottom: 1px solid #e0e0e0;
-
-				h3 {
-					margin: 0;
-					color: #333;
-					font-size: 1.3rem;
-				}
-			}
-
-			.modal-content {
-				padding: 2rem;
-
-				form {
-					display: flex;
-					gap: 1rem;
-					align-items: flex-start;
-					flex-wrap: wrap;
-
-					input {
-						padding: 0.5rem;
-						border: 1px solid #ddd;
-						border-radius: 4px;
-						font-size: 1rem;
-
-						&:focus {
-							outline: none;
-							border-color: #4caf50;
-						}
-
-						&[type="text"] {
-							flex: 1;
-							min-width: 200px;
-						}
-
-						&[type="number"] {
-							width: 100px;
-						}
-					}
-
-					button {
-						white-space: nowrap;
-					}
-				}
-			}
-		}
-	}
 
 	.no-data {
 		text-align: center;
@@ -188,6 +116,7 @@
 						display: flex;
 						flex-direction: column;
 						gap: 0.25rem;
+                        position: relative;
 
 						.item-name {
 							font-weight: 600;
@@ -201,15 +130,31 @@
 						}
 
 						.item-actions {
+                            bottom: 1rem;
+                            right: 1rem;
 							display: flex;
+                            justify-content: flex-end;
 							gap: 0.25rem;
 							margin-top: 0.5rem;
+							opacity: 0;
+							transition: opacity 0.2s ease;
 
 							button {
-								font-size: 0.7rem;
-								padding: 0.25rem 0.5rem;
+								font-size: 0.9rem;
+								padding: 0.25rem;
+								width: 22px;
+								height: 22px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+								border-radius: 50%;
+								line-height: 1;
 							}
 						}
+					}
+
+					&:hover .item-info .item-actions {
+						opacity: 1;
 					}
 
 					.edit-item-form {
@@ -241,6 +186,36 @@
 				}
 
 				.tip-header, .tax-header {
+					.tip-display, .tax-display {
+						cursor: pointer;
+						padding: 0.25rem;
+						border-radius: 4px;
+						transition: background-color 0.2s;
+
+						&:hover {
+							background: rgba(255, 255, 255, 0.2);
+						}
+					}
+
+					.edit-tip-form, .edit-tax-form {
+						.edit-tip-input, .edit-tax-input {
+							width: 50px;
+							padding: 0.25rem;
+							border: 2px solid white;
+							border-radius: 4px;
+							text-align: center;
+							font-size: 0.75rem;
+							background: white;
+							color: #333;
+
+							&:focus {
+								outline: none;
+								border-color: #fff;
+								box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+							}
+						}
+					}
+
 					.tip-controls, .tax-controls {
 						margin-top: 0.5rem;
 
@@ -296,12 +271,25 @@
 						.user-actions {
 							display: flex;
 							gap: 0.25rem;
+							opacity: 0;
+							transition: opacity 0.2s ease;
 
 							button {
-								font-size: 0.7rem;
-								padding: 0.25rem 0.5rem;
+								font-size: 0.9rem;
+								padding: 0.25rem;
+								width: 22px;
+								height: 22px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+								border-radius: 50%;
+								line-height: 1;
 							}
 						}
+					}
+
+					&:hover .user-display .user-actions {
+						opacity: 1;
 					}
 
 					.edit-user-form {
@@ -453,23 +441,6 @@
 
 @media (max-width: 768px) {
 	.user-items-table {
-		.add-user-modal, .add-item-modal {
-			width: 95%;
-			max-height: 90%;
-
-			.modal-content {
-				padding: 1.5rem;
-
-				form {
-					flex-direction: column;
-					gap: 0.75rem;
-
-					input[type="number"] {
-						width: 100%;
-					}
-				}
-			}
-		}
 
 		.table-container {
 			font-size: 0.875rem;
@@ -483,15 +454,17 @@
 					min-width: 100px;
 
 					.item-actions button {
-						font-size: 0.6rem;
-						padding: 0.2rem 0.3rem;
+						font-size: 0.8rem;
+						width: 20px;
+						height: 20px;
 					}
 				}
 
 				.user-cell {
 					.user-actions button {
-						font-size: 0.6rem;
-						padding: 0.2rem 0.3rem;
+						font-size: 0.8rem;
+						width: 20px;
+						height: 20px;
 					}
 				}
 			}

@@ -6,63 +6,16 @@
 		</button>
 	</div>
 
-	@if (showingAddUserForm()) {
-		<div class="add-forms-overlay" (click)="hideAddForms()">
-			<div class="add-user-modal" (click)="$event.stopPropagation()">
-				<div class="modal-header">
-					<h3>Add User</h3>
-					<button appBtn="secondary" (click)="hideAddForms()">Close</button>
-				</div>
-				<div class="modal-content">
-					<form [formGroup]="userForm" (ngSubmit)="addUser()">
-						<input 
-							type="text" 
-							formControlName="name" 
-							placeholder="Enter user name"
-							autocomplete="off"
-						/>
-						<button type="submit" appBtn="primary" [disabled]="userForm.invalid">
-							Add User
-						</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	}
-
-	@if (showingAddItemForm()) {
-		<div class="add-forms-overlay" (click)="hideAddForms()">
-			<div class="add-item-modal" (click)="$event.stopPropagation()">
-				<div class="modal-header">
-					<h3>Add Item</h3>
-					<button appBtn="secondary" (click)="hideAddForms()">Close</button>
-				</div>
-				<div class="modal-content">
-					<form [formGroup]="itemForm" (ngSubmit)="addItem()">
-						<input 
-							type="text" 
-							formControlName="name" 
-							placeholder="Item name"
-							autocomplete="off"
-						/>
-						<input 
-							type="number" 
-							formControlName="quantity" 
-							min="1"
-						/>
-						<input 
-							type="number" 
-							formControlName="price" 
-							min="0"
-							step="1"
-						/>
-						<button type="submit" appBtn="primary" [disabled]="itemForm.invalid">
-							Add Item
-						</button>
-					</form>
-				</div>
-			</div>
-		</div>
+	<!-- New Modal Component -->
+	@if (modalType()) {
+		<app-user-item-form-modal
+			[modalType]="modalType()!"
+			[modalData]="modalData()"
+			[isVisible]="isModalVisible"
+			(userSubmitted)="onUserSubmitted($event)"
+			(itemSubmitted)="onItemSubmitted($event)"
+			(closed)="closeModal()"
+		/>
 	}
 
 	<div class="table-container">
@@ -71,70 +24,29 @@
 				<tr>
 					<th class="corner-header">
 						<div class="corner-content">
+                            <div class="items-section" (click)="showAddItemForm()">
+                                <span class="items-label">Items</span>
+                            </div>
 							<div class="users-section" (click)="showAddUserForm()">
 								<span class="users-label">Users</span>
-							</div>
-							<div class="items-section" (click)="showAddItemForm()">
-								<span class="items-label">Items</span>
 							</div>
 						</div>
 					</th>
 					@for (item of items(); track item.id) {
 						<th class="item-header" [class.quantity-warning]="hasQuantityMismatch(item.id)">
-							@if (editingItemId() === item.id) {
-								<div class="edit-item-form">
-									<input 
-										type="text" 
-										[(ngModel)]="editingItemName"
-										(ngModelChange)="updateItemName(item.id)"
-										(blur)="stopEditItem()"
-										(keyup.escape)="stopEditItem()"
-										(keyup.enter)="stopEditItem()"
-										class="edit-item-name-input"
-										placeholder="Item name"
-									/>
-									<input 
-										type="number" 
-										[(ngModel)]="editingItemQuantity"
-										(ngModelChange)="updateItemQuantity(item.id)"
-										(blur)="stopEditItem()"
-										(keyup.escape)="stopEditItem()"
-										(keyup.enter)="stopEditItem()"
-										min="1"
-										class="edit-item-quantity-input"
-									/>
-									<input 
-										type="number" 
-										[(ngModel)]="editingItemPrice"
-										(ngModelChange)="updateItemPrice(item.id)"
-										(blur)="stopEditItem()"
-										(keyup.escape)="stopEditItem()"
-										(keyup.enter)="stopEditItem()"
-										min="0"
-										step="1"
-										class="edit-item-price-input"
-									/>
+							<div class="item-info">
+								<span class="item-name" (dblclick)="startEditItem(item.id, item.name, item.quantity, item.price)">{{ item.name }}</span>
+								<span class="item-price">${{ item.price.toFixed(2) }}</span>
+								<div class="item-actions">
+									<button 
+										appBtn="danger" 
+										(click)="removeItem(item.id)"
+										title="Remove item"
+									>
+										✕
+									</button>
 								</div>
-							} @else {
-								<div class="item-info">
-									<span class="item-name" (dblclick)="startEditItem(item.id, item.name, item.quantity, item.price)">{{ item.name }}</span>
-									<span class="item-price">${{ item.price.toFixed(2) }}</span>
-									<div class="item-actions">
-										<button 
-											appBtn="info" 
-											(click)="startEditItem(item.id, item.name, item.quantity, item.price)"
-										>
-											Edit
-										</button>
-										<button 
-											appBtn="danger" 
-											(click)="removeItem(item.id)"
-										>
-											Remove
-										</button>
-									</div>
-								</div>
-							}
+							</div>
 						</th>
 					}
 					@if (items().length === 0) {
@@ -144,30 +56,50 @@
 					}
 					<th class="subtotal-header">Subtotal</th>
 					<th class="tip-header">
-						Tip ({{ tipPercentage() }}%)
-						<div class="tip-controls">
-							<input 
-								type="number" 
-								[(ngModel)]="tipPercentage"
-								min="0"
-								max="100"
-								step="1"
-								class="percentage-input"
-							/>%
-						</div>
+						@if (editingTipPercentage()) {
+							<div class="edit-tip-form">
+								Tip (
+								<input 
+									type="number" 
+									[(ngModel)]="tempTipPercentage"
+									(ngModelChange)="updateTipPercentage()"
+									(blur)="stopEditTip()"
+									(keyup.escape)="stopEditTip()"
+									(keyup.enter)="stopEditTip()"
+									min="0"
+									max="100"
+									step="1"
+									class="edit-tip-input"
+								/>%)
+							</div>
+						} @else {
+							<div class="tip-display" (click)="startEditTip()" (dblclick)="startEditTip()">
+								Tip ({{ tipPercentage() }}%)
+							</div>
+						}
 					</th>
 					<th class="tax-header">
-						Tax ({{ taxPercentage() }}%)
-						<div class="tax-controls">
-							<input 
-								type="number" 
-								[(ngModel)]="taxPercentage"
-								min="0"
-								max="100"
-								step="1"
-								class="percentage-input"
-							/>%
-						</div>
+						@if (editingTaxPercentage()) {
+							<div class="edit-tax-form">
+								Tax (
+								<input 
+									type="number" 
+									[(ngModel)]="tempTaxPercentage"
+									(ngModelChange)="updateTaxPercentage()"
+									(blur)="stopEditTax()"
+									(keyup.escape)="stopEditTax()"
+									(keyup.enter)="stopEditTax()"
+									min="0"
+									max="100"
+									step="1"
+									class="edit-tax-input"
+								/>%)
+							</div>
+						} @else {
+							<div class="tax-display" (click)="startEditTax()" (dblclick)="startEditTax()">
+								Tax ({{ taxPercentage() }}%)
+							</div>
+						}
 					</th>
 					<th class="total-header">Total</th>
 				</tr>
@@ -176,38 +108,18 @@
 				@for (user of users(); track user.id) {
 					<tr>
 						<td class="user-cell">
-							@if (editingUserId() === user.id) {
-								<div class="edit-user-form">
-									<input 
-										type="text" 
-										[(ngModel)]="editingUserName"
-										(ngModelChange)="updateUser(user.id)"
-										(blur)="stopEditUser()"
-										(keyup.escape)="stopEditUser()"
-										(keyup.enter)="stopEditUser()"
-										class="edit-user-input"
-										placeholder="Enter user name"
-									/>
+							<div class="user-display">
+								<span class="user-name" (dblclick)="startEditUser(user.id, user.name)">{{ user.name }}</span>
+								<div class="user-actions">
+									<button 
+										appBtn="danger" 
+										(click)="removeUser(user.id)"
+										title="Remove user"
+									>
+										✕
+									</button>
 								</div>
-							} @else {
-								<div class="user-display">
-									<span class="user-name" (dblclick)="startEditUser(user.id, user.name)">{{ user.name }}</span>
-									<div class="user-actions">
-										<button 
-											appBtn="info" 
-											(click)="startEditUser(user.id, user.name)"
-										>
-											Edit
-										</button>
-										<button 
-											appBtn="danger" 
-											(click)="removeUser(user.id)"
-										>
-											Remove
-										</button>
-									</div>
-								</div>
-							}
+							</div>
 						</td>
 						@for (item of items(); track item.id) {
 							<td class="quantity-cell">
@@ -220,7 +132,7 @@
 										(keyup.escape)="stopEdit()"
 										(keyup.enter)="stopEdit()"
 										min="0"
-										step="0.1"
+										step="1"
 										class="quantity-input"
 									/>
 								} @else {

@@ -7,21 +7,20 @@ import {
 	Injector,
 	signal,
 } from "@angular/core";
-import {
-	FormControl,
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule,
-	Validators,
-} from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { ButtonDirective } from "../../directives/button.directive";
 import { UsersItemsService } from "../../services/users-items.service";
-import { UsersService } from "../../services/users.service";
-import { ItemsService } from "../../services/items.service";
+import { UsersService, User } from "../../services/users.service";
+import { ItemsService, Item } from "../../services/items.service";
+import {
+	UserItemFormModalComponent,
+	ModalType,
+	ModalData,
+} from "./user-item-form-modal/user-item-form-modal.component";
 
 @Component({
 	selector: "app-user-items-table",
-	imports: [FormsModule, ReactiveFormsModule, ButtonDirective],
+	imports: [FormsModule, ButtonDirective, UserItemFormModalComponent],
 	templateUrl: "./user-items-table.component.html",
 	styleUrl: "./user-items-table.component.css",
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,27 +41,13 @@ export class UserItemsTableComponent {
 	editingCell = signal<{ userId: number; itemId: number } | null>(null);
 	editingQuantity = signal<number>(0);
 
-	// User management
-	editingUserId = signal<number | null>(null);
-	editingUserName = signal<string>("");
-	userForm = new FormGroup({
-		name: new FormControl("", [Validators.required, Validators.minLength(1)]),
-	});
+	// Modal management
+	modalType = signal<ModalType | null>(null);
+	modalData = signal<ModalData | null>(null);
 
-	// Item management
-	editingItemId = signal<number | null>(null);
-	editingItemName = signal<string>("");
-	editingItemQuantity = signal<number>(1);
-	editingItemPrice = signal<number>(0);
-	itemForm = new FormGroup({
-		name: new FormControl("", [Validators.required, Validators.minLength(1)]),
-		quantity: new FormControl(1, [Validators.required, Validators.min(1)]),
-		price: new FormControl(0, [Validators.required, Validators.min(0)]),
-	});
-
-	// Corner cell management
-	showingAddUserForm = signal<boolean>(false);
-	showingAddItemForm = signal<boolean>(false);
+	get isModalVisible() {
+		return this.modalType() !== null;
+	}
 
 	// Tip and tax
 	tipPercentage = signal<number>(10); // Default 10%
@@ -72,9 +57,82 @@ export class UserItemsTableComponent {
 	tempTipPercentage = signal<number>(10);
 	tempTaxPercentage = signal<number>(0);
 
+	// Tip and tax editing methods
+	startEditTip() {
+		this.tempTipPercentage.set(this.tipPercentage());
+		this.editingTipPercentage.set(true);
+
+		afterNextRender(
+			() => {
+				const input = document.querySelector(
+					".edit-tip-input",
+				) as HTMLInputElement;
+				if (input) {
+					input.focus();
+					input.select();
+				}
+			},
+			{ injector: this.injector },
+		);
+	}
+
+	stopEditTip() {
+		setTimeout(() => {
+			const activeElement = document.activeElement;
+			const isEditInput = activeElement?.classList.contains("edit-tip-input");
+
+			if (!isEditInput) {
+				this.editingTipPercentage.set(false);
+			}
+		}, 0);
+	}
+
+	updateTipPercentage() {
+		const value = this.tempTipPercentage();
+		if (value >= 0 && value <= 100) {
+			this.tipPercentage.set(value);
+		}
+	}
+
+	startEditTax() {
+		this.tempTaxPercentage.set(this.taxPercentage());
+		this.editingTaxPercentage.set(true);
+
+		afterNextRender(
+			() => {
+				const input = document.querySelector(
+					".edit-tax-input",
+				) as HTMLInputElement;
+				if (input) {
+					input.focus();
+					input.select();
+				}
+			},
+			{ injector: this.injector },
+		);
+	}
+
+	stopEditTax() {
+		setTimeout(() => {
+			const activeElement = document.activeElement;
+			const isEditInput = activeElement?.classList.contains("edit-tax-input");
+
+			if (!isEditInput) {
+				this.editingTaxPercentage.set(false);
+			}
+		}, 0);
+	}
+
+	updateTaxPercentage() {
+		const value = this.tempTaxPercentage();
+		if (value >= 0 && value <= 100) {
+			this.taxPercentage.set(value);
+		}
+	}
+
 	getQuantity(userId: number, itemId: number): number {
 		const mapping = this.mappings().find(
-			(m) => m.userId === userId && m.itemId === itemId,
+			(m: any) => m.userId === userId && m.itemId === itemId,
 		);
 		return mapping?.quantity || 0;
 	}
@@ -108,53 +166,11 @@ export class UserItemsTableComponent {
 		return bill?.totalBill || 0;
 	}
 
-	// User management methods
-	addUser() {
-		if (this.userForm.valid) {
-			const name = this.userForm.value.name!;
-			const newUser = {
-				id: Date.now(),
-				name: name.trim(),
-			};
-			this.usersService.addUser(newUser);
-			this.userForm.reset({ name: "" });
-		}
-	}
-
 	startEditUser(userId: number, currentName: string) {
-		this.editingUserId.set(userId);
-		this.editingUserName.set(currentName);
-
-		afterNextRender(
-			() => {
-				const input = document.querySelector(
-					".edit-user-input",
-				) as HTMLInputElement;
-				if (input) {
-					input.focus();
-					input.select();
-				}
-			},
-			{ injector: this.injector },
-		);
-	}
-
-	stopEditUser() {
-		setTimeout(() => {
-			const activeElement = document.activeElement;
-			const isEditInput = activeElement?.classList.contains("edit-user-input");
-
-			if (!isEditInput) {
-				this.editingUserId.set(null);
-				this.editingUserName.set("");
-			}
-		}, 0);
-	}
-
-	updateUser(userId: number) {
-		const newName = this.editingUserName().trim();
-		if (newName) {
-			this.usersService.updateUser(userId, newName);
+		const user = this.users().find((u: any) => u.id === userId);
+		if (user) {
+			this.modalType.set("editUser");
+			this.modalData.set({ user });
 		}
 	}
 
@@ -163,75 +179,16 @@ export class UserItemsTableComponent {
 		this.usersItemsService.removeUserMappings(userId);
 	}
 
-	// Item management methods
-	addItem() {
-		if (this.itemForm.valid) {
-			const { name, quantity, price } = this.itemForm.value;
-			this.itemsService.addItem(name!, quantity!, price!);
-			this.itemForm.reset({ name: "", quantity: 1, price: 0 });
-		}
-	}
-
 	startEditItem(
 		itemId: number,
 		currentName: string,
 		currentQuantity: number,
 		currentPrice: number,
 	) {
-		this.editingItemId.set(itemId);
-		this.editingItemName.set(currentName);
-		this.editingItemQuantity.set(currentQuantity);
-		this.editingItemPrice.set(currentPrice);
-
-		afterNextRender(
-			() => {
-				const input = document.querySelector(
-					".edit-item-name-input",
-				) as HTMLInputElement;
-				if (input) {
-					input.focus();
-					input.select();
-				}
-			},
-			{ injector: this.injector },
-		);
-	}
-
-	stopEditItem() {
-		setTimeout(() => {
-			const activeElement = document.activeElement;
-			const isEditInput =
-				activeElement?.classList.contains("edit-item-name-input") ||
-				activeElement?.classList.contains("edit-item-quantity-input") ||
-				activeElement?.classList.contains("edit-item-price-input");
-
-			if (!isEditInput) {
-				this.editingItemId.set(null);
-				this.editingItemName.set("");
-				this.editingItemQuantity.set(1);
-				this.editingItemPrice.set(0);
-			}
-		}, 0);
-	}
-
-	updateItemName(itemId: number) {
-		const newName = this.editingItemName().trim();
-		if (newName) {
-			this.itemsService.updateItem(itemId, { name: newName });
-		}
-	}
-
-	updateItemQuantity(itemId: number) {
-		const quantity = this.editingItemQuantity();
-		if (quantity >= 1) {
-			this.itemsService.updateItem(itemId, { quantity });
-		}
-	}
-
-	updateItemPrice(itemId: number) {
-		const price = this.editingItemPrice();
-		if (price >= 0) {
-			this.itemsService.updateItem(itemId, { price });
+		const item = this.items().find((i: any) => i.id === itemId);
+		if (item) {
+			this.modalType.set("editItem");
+			this.modalData.set({ item });
 		}
 	}
 
@@ -240,48 +197,85 @@ export class UserItemsTableComponent {
 		this.usersItemsService.removeItemMappings(itemId);
 	}
 
-	get userNameControl() {
-		return this.userForm.controls.name;
-	}
-
-	get itemNameControl() {
-		return this.itemForm.controls.name;
-	}
-
-	get itemQuantityControl() {
-		return this.itemForm.controls.quantity;
-	}
-
-	get itemPriceControl() {
-		return this.itemForm.controls.price;
-	}
-
 	// Check if item quantity matches assigned quantities
 	hasQuantityMismatch(itemId: number): boolean {
-		const item = this.items().find((i) => i.id === itemId);
+		const item = this.items().find((i: any) => i.id === itemId);
 		if (!item) return false;
 
 		const totalAssigned = this.mappings()
-			.filter((m) => m.itemId === itemId)
-			.reduce((sum, m) => sum + m.quantity, 0);
+			.filter((m: any) => m.itemId === itemId)
+			.reduce((sum: number, m: any) => sum + m.quantity, 0);
 
 		return Math.abs(totalAssigned - item.quantity) > 0.01; // Allow small floating point differences
 	}
 
-	// Corner cell methods
+	// Modal methods
 	showAddUserForm() {
-		this.showingAddUserForm.set(true);
-		this.showingAddItemForm.set(false);
+		this.modalType.set("addUser");
+		this.modalData.set(null);
 	}
 
 	showAddItemForm() {
-		this.showingAddItemForm.set(true);
-		this.showingAddUserForm.set(false);
+		this.modalType.set("addItem");
+		this.modalData.set(null);
 	}
 
-	hideAddForms() {
-		this.showingAddUserForm.set(false);
-		this.showingAddItemForm.set(false);
+	closeModal() {
+		this.modalType.set(null);
+		this.modalData.set(null);
+	}
+
+	// Modal event handlers
+	onUserSubmitted(event: { name: string; isEdit: boolean; user?: User }) {
+		let success = true;
+
+		if (event.isEdit && event.user) {
+			this.usersService.updateUser(event.user.id, event.name);
+		} else {
+			const newUser = {
+				id: Date.now(),
+				name: event.name,
+			};
+			success = this.usersService.addUser(newUser);
+		}
+
+		if (success) {
+			this.closeModal();
+		} else {
+			// Keep modal open, user will see console warning
+			// Could add toast notification here in the future
+		}
+	}
+
+	onItemSubmitted(event: {
+		name: string;
+		quantity: number;
+		price: number;
+		isEdit: boolean;
+		item?: Item;
+	}) {
+		let success = true;
+
+		if (event.isEdit && event.item) {
+			this.itemsService.updateItem(event.item.id, {
+				name: event.name,
+				quantity: event.quantity,
+				price: event.price,
+			});
+		} else {
+			success = this.itemsService.addItem(
+				event.name,
+				event.quantity,
+				event.price,
+			);
+		}
+
+		if (success) {
+			this.closeModal();
+		} else {
+			// Keep modal open, user will see console warning
+			// Could add toast notification here in the future
+		}
 	}
 
 	// Calculate grand total
@@ -339,7 +333,7 @@ export class UserItemsTableComponent {
 		// Clear users (this will trigger the effect to remove mappings)
 		this.users().forEach((user) => this.removeUser(user.id));
 		// Clear items (this will trigger the effect to remove mappings)
-		this.items().forEach((item) => this.removeItem(item.id));
+		this.items().forEach((item: any) => this.removeItem(item.id));
 		// Reset tip and tax to defaults
 		this.tipPercentage.set(10);
 		this.taxPercentage.set(0);
