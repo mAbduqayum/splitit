@@ -1,0 +1,50 @@
+pre-commit:
+  parallel: true
+  commands:
+    #sort-package-json:
+    #  glob: "package.json"
+    #  run: npx sort-package-json
+    #  stage_fixed: true
+    lint:
+      glob: "*.ts"
+      run: biome lint --write {staged_files}
+      stage_fixed: true
+    format:
+      glob: "*.ts"
+      run: biome format --write {staged_files}
+      stage_fixed: true
+  exclude_tags:
+    - merge
+    - rebase
+
+pre-push:
+  piped: true # stop if one fails
+  commands:
+    lint:
+      run: biome lint .
+    format:
+      run: biome format .
+    check:
+      run: biome check .
+    #test:
+    #  run: bunx run test
+    #security-check:
+    #  run: bunx audit-ci
+    #  skip:
+    #    - merge
+    #    - rebase
+    #git-leaks:
+    #  run: gitleaks git
+
+commit-msg:
+  commands:
+    conventional-commits:
+      run: |
+        CONVENTIONAL_COMMIT_PATTERN="^(new|fix|docs|style|ref|perf|test|chore|build|ci|revert)(\(.+\))?:"
+        commit_message=$(cat {1})
+        if ! echo "$commit_message" | grep -qE "$CONVENTIONAL_COMMIT_PATTERN"; then
+          echo "Commit message must follow conventional commits format:"
+          echo "type(scope): description"
+          echo "Types: new, fix, docs, style, ref, perf, test, chore, build, ci, revert"
+          exit 1
+        fi
