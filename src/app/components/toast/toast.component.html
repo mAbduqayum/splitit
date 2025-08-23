@@ -1,5 +1,5 @@
 @for (toast of toasts(); track toast.id) {
-    <div class="toast toast--{{ toast.type }}" role="alert">
+    <div class="toast" role="alert" [style.--toast-color]="toast.color">
         <mat-icon class="toast__icon">{{ toast.icon }}</mat-icon>
         <div class="toast__message">{{ toast.message }}</div>
         <div class="spacer"></div>

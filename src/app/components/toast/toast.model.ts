@@ -6,6 +6,7 @@ export interface Toast {
 	message: string;
 	type: ToastType;
 	icon: ToastIcon;
+	color: string;
 }
 
 export function newToast(message: string, type: ToastType): Toast {
@@ -14,10 +15,11 @@ export function newToast(message: string, type: ToastType): Toast {
 		message,
 		type,
 		icon: getIcon(type),
+		color: getToastColor(type),
 	};
 }
 
-function getIcon(s: string): ToastIcon {
+function getIcon(s: ToastType): ToastIcon {
 	switch (s) {
 		case "info":
 			return "info";
@@ -28,5 +30,17 @@ function getIcon(s: string): ToastIcon {
 		case "error":
 			return "error";
 	}
-	return "info";
+}
+
+function getToastColor(s: ToastType): string {
+	switch (s) {
+		case "info":
+			return "#3b82f6";
+		case "success":
+			return "#10b981";
+		case "warning":
+			return "#f59e0b";
+		case "error":
+			return "#ef4444";
+	}
 }
