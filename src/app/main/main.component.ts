@@ -1,7 +1,5 @@
-import { Component, inject } from "@angular/core";
+import { Component } from "@angular/core";
 import { ToastComponent } from "../components/toast/toast.component";
-import { UsersService } from "../services/users.service";
-import { ItemsService } from "../services/items.service";
 
 @Component({
 	selector: "app-main",
@@ -9,7 +7,4 @@ import { ItemsService } from "../services/items.service";
 	templateUrl: "./main.component.html",
 	styleUrl: "./main.component.css",
 })
-export class MainComponent {
-	usersService = inject(UsersService);
-	itemsService = inject(ItemsService);
-}
+export class MainComponent {}

@@ -1,5 +1,4 @@
 import { effect, Injectable, signal } from "@angular/core";
-import { BaseStorageService } from "./baseStorageService";
 
 export interface Item {
 	id: number;
@@ -11,12 +10,11 @@ export interface Item {
 @Injectable({
 	providedIn: "root",
 })
-export class ItemsService extends BaseStorageService<Item> {
+export class ItemsService {
 	readonly STORAGE_KEY = "items";
 	readonly items = signal<Set<Item>>(this.load());
 
 	constructor() {
-		super();
 		effect(() => {
 			this.save(this.items());
 		});
