@@ -1,65 +1,50 @@
 :host {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 1rem;
+    right: 1rem;
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: .5rem;
     max-width: 400px;
 }
 
 .toast {
     display: flex;
-    align-items: flex-start;
-    padding: 16px;
-    border-radius: 8px;
+    align-items: center;
+    gap: .5rem;
+    height: 60px;
+    padding-inline: .5rem;
+    border-radius: .5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     background: white;
     border-left: 4px solid;
     animation: slideIn 0.3s ease-out;
     min-width: 320px;
-}
 
-.toast__content {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    flex: 1;
-}
-
-.toast__icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    svg {
-        width: 100%;
-        height: 100%;
+    .toast__icon {
+        width: 2rem;
+        aspect-ratio: 1;
     }
-}
 
-.toast__message {
-    font-size: 14px;
-    line-height: 1.4;
-    color: #374151;
-    word-wrap: break-word;
-}
+    .toast__message {
+        font-size: 14px;
+        line-height: 1.4;
+        color: #374151;
+        word-wrap: break-word;
+    }
 
-.toast__close {
-    background: none;
-    border: none;
-    padding: 4px;
-    margin-left: 8px;
-    cursor: pointer;
-    color: #6b7280;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-
-    svg {
-        width: 16px;
-        height: 16px;
+    .toast__close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #6b7280;
+        transition: all 0.2s ease;
+        border-radius: 100%;
+        padding: .5rem;
+        width: 2rem;
+        height: 2rem;
     }
 }
 
@@ -117,17 +102,4 @@
 
 .toast:hover {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    :host {
-        left: 20px;
-        right: 20px;
-        max-width: none;
-    }
-
-    .toast {
-        min-width: auto;
-    }
 }

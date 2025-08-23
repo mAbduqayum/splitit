@@ -1,5 +1,5 @@
 import { Injectable, signal } from "@angular/core";
-import { Toast } from "./toast.model";
+import { newToast, Toast, ToastType } from "./toast.model";
 
 @Injectable({
 	providedIn: "root",
@@ -7,10 +7,10 @@ import { Toast } from "./toast.model";
 export class ToastService {
 	toasts = signal<Toast[]>([]);
 
-	add(toast: Toast) {
-		const newToast = { ...toast, id: Date.now() };
-		this.toasts.update((toasts) => [...toasts, newToast]);
-		setTimeout(() => this.remove(newToast.id), 5000);
+	add(message: string, type: ToastType) {
+		const toast = newToast(message, type);
+		this.toasts.update((toasts) => [...toasts, toast]);
+		setTimeout(() => this.remove(toast.id), 500000);
 	}
 
 	remove(id: number) {
