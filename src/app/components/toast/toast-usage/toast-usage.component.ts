@@ -23,4 +23,18 @@ export class ToastUsageComponent {
 			type: "error",
 		});
 	}
+
+	showInfoToast() {
+		this.#toastService.add({
+			message: "This is an informational message.",
+			type: "info",
+		});
+	}
+
+	showWarningToast() {
+		this.#toastService.add({
+			message: "Warning: Please check your input before proceeding.",
+			type: "warning",
+		});
+	}
 }
