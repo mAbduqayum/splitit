@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
-import { ToastService } from "../toast.service";
 import { MatButton } from "@angular/material/button";
+import { ToastService } from "../toast.service";
 
 @Component({
 	selector: "app-toast-usage",

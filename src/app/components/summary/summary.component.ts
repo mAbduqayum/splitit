@@ -1,9 +1,9 @@
 import { Component, computed, inject } from "@angular/core";
 import { MatButton, MatIconButton } from "@angular/material/button";
-import { MatTableModule } from "@angular/material/table";
 import { MatIcon } from "@angular/material/icon";
-import { User, UsersService } from "../../services/users.service";
+import { MatTableModule } from "@angular/material/table";
 import { Item, ItemsService } from "../../services/items.service";
+import { User, UsersService } from "../../services/users.service";
 import { CreateButtonsComponent } from "../create-buttons/create-buttons.component";
 
 @Component({

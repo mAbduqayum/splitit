@@ -4,18 +4,18 @@ table {
 
 th.item-header,
 td.user-cell {
-    position: relative;
+	position: relative;
 }
 
 .remove-btn {
-    visibility: hidden;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
+	visibility: hidden;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
 }
 
 th.item-header:hover .remove-btn,
 td.user-cell:hover .remove-btn {
-    visibility: visible;
+	visibility: visible;
 }
