@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { UsersService } from "../services/users.service";
-import { ItemsService } from "../services/items.service";
+import { Item, ItemsService } from "../services/items.service";
 
 @Component({
 	selector: "app-users-items",
@@ -11,4 +11,12 @@ import { ItemsService } from "../services/items.service";
 export class UsersItemsComponent {
 	usersService = inject(UsersService);
 	itemsService = inject(ItemsService);
+
+	constructor() {
+		this.add("x");
+		this.add("y");
+	}
+	add(name: string): void {
+		this.itemsService.add({ name, price: 0 });
+	}
 }

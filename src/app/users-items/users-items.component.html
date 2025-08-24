@@ -1,2 +1,36 @@
-<div>{{usersService.self().size}}</div>
-<div>{{itemsService.self().size}}</div>
+<table>
+    <caption>Table 1</caption>
+    <thead>
+        <tr>
+            @for (item of itemsService.self(); track item.id) {
+                <th>{{ item.name }}</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

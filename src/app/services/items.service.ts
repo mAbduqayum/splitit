@@ -4,7 +4,6 @@ import { BaseStorage } from "./base-storage.class";
 export interface Item {
 	id: number;
 	name: string;
-	quantity: number;
 	price: number;
 }
 
