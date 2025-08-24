@@ -3,8 +3,7 @@ import { ToastService } from "../components/toast/toast.service";
 import { BaseStorage } from "./base-storage.class";
 
 export interface Item {
-	id: number;
-	name: string;
+	id: string;
 	price: number;
 }
 

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { CreateItemComponent } from "../create-item/create-item.component";
-import { CreateUserComponent } from "../create-user/create-user.component";
+import { CreateItemComponent } from "./create-item/create-item.component";
+import { CreateUserComponent } from "./create-user/create-user.component";
 
 @Component({
 	selector: "app-create-buttons",

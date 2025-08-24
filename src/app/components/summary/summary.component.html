@@ -4,7 +4,7 @@
 
 <table
         mat-table
-        [dataSource]="usersService.self()"
+        [dataSource]="usersService.store()"
 >
     <!-- User name Definition -->
     <ng-container matColumnDef="user-name">
@@ -20,10 +20,10 @@
     </ng-container>
 
     <!-- Items Definition -->
-    @for (item of itemsService.self(); track item.id) {
-        <ng-container [matColumnDef]="item.name">
+    @for (item of itemsService.store(); track item.id) {
+        <ng-container [matColumnDef]="item.id">
             <th mat-header-cell *matHeaderCellDef class="item-header">
-                {{ item.name }}
+                {{ item.id }}
                 <button matIconButton (click)="removeItem(item)" class="remove-btn">
                     <mat-icon>close</mat-icon>
                 </button>

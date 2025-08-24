@@ -25,13 +25,13 @@ export class SummaryComponent {
 
 	displayedColumns = computed(() => [
 		"user-name",
-		...this.itemsService.self().map((i) => i.name),
+		...this.itemsService.store().map((i) => i.id),
 		...this.summaries,
 	]);
 
 	addItem(): void {
 		this.itemsService.add({
-			name: Date.now().toString(),
+			id: Date.now().toString(),
 			price: Math.floor(Math.random() * 10),
 		});
 	}
@@ -45,7 +45,7 @@ export class SummaryComponent {
 	}
 
 	addUser(): void {
-		this.usersService.add({ name: Date.now().toString() });
+		this.usersService.add({ id: Date.now().toString() });
 	}
 
 	clearAll(): void {

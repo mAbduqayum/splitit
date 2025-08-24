@@ -1,8 +1,12 @@
 import { effect, inject, signal } from "@angular/core";
 import { ToastService } from "../components/toast/toast.service";
 
-export class BaseStorage<T extends { id: number }> {
-	readonly self = signal<Array<T>>([]);
+interface ItemId {
+	id: string | number;
+}
+
+export class BaseStorage<T extends ItemId> {
+	readonly store = signal<Array<T>>([]);
 	#toastService = inject(ToastService);
 
 	protected constructor(protected readonly storageKey: string) {
@@ -10,30 +14,29 @@ export class BaseStorage<T extends { id: number }> {
 	}
 
 	clear(): void {
-		this.self.set([]);
+		this.store.set([]);
 		this.#toastService.add(`Cleared ${this.storageKey}`, "warning");
 	}
 
-	add(itemData: Omit<T, "id">): void {
-		const newItem = {
-			id: Date.now(),
-			...itemData,
-		} as T;
-
-		this.self.update((items) => {
-			return [...items, newItem];
+	add(item: T): void {
+		const existingIds = this.store().map((item) => item.id);
+		if (existingIds.includes(item.id)) {
+			this.#toastService.add(`Item with id ${item.id} already exists`, "error");
+		}
+		this.store.update((items) => {
+			return [...items, item];
 		});
 	}
 
 	update(item: T): void {
-		this.self.update((items) => {
+		this.store.update((items) => {
 			const filtered = [...items].filter((i) => i.id !== item.id);
 			return [...filtered, item];
 		});
 	}
 
 	remove(item: T): void {
-		this.self.update((users) => {
+		this.store.update((users) => {
 			return [...users].filter((u) => u.id !== item.id);
 		});
 	}
@@ -42,7 +45,7 @@ export class BaseStorage<T extends { id: number }> {
 		try {
 			const stored = localStorage.getItem(this.storageKey);
 			if (stored !== null) {
-				this.self.set(JSON.parse(stored));
+				this.store.set(JSON.parse(stored));
 			}
 			this.#toastService.add(`Loaded ${this.storageKey} from storage`, "info");
 		} catch (e) {
@@ -54,7 +57,7 @@ export class BaseStorage<T extends { id: number }> {
 
 		effect(() => {
 			try {
-				localStorage.setItem(this.storageKey, JSON.stringify(this.self()));
+				localStorage.setItem(this.storageKey, JSON.stringify(this.store()));
 			} catch (e) {
 				this.#toastService.add(
 					`Failed to save ${this.storageKey} to storage`,
