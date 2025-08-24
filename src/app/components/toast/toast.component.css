@@ -1,75 +1,75 @@
 :host {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    max-width: 400px;
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	max-width: 400px;
 }
 
 .toast {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    height: 60px;
-    padding-inline: .5rem;
-    border-radius: .5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    background: white;
-    border-left: 4px solid;
-    animation: slideIn 0.3s ease-out;
-    min-width: 320px;
-    border-left-color: var(--toast-color);
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	height: 60px;
+	padding-inline: 0.5rem;
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	background: white;
+	border-left: 4px solid;
+	animation: slideIn 0.3s ease-out;
+	min-width: 320px;
+	border-left-color: var(--toast-color);
 
-    .toast__icon {
-        color: var(--toast-color);
-    }
+	.toast__icon {
+		color: var(--toast-color);
+	}
 
-    .toast__icon {
-        width: 2rem;
-        aspect-ratio: 1;
-    }
+	.toast__icon {
+		width: 2rem;
+		aspect-ratio: 1;
+	}
 
-    .toast__message {
-        font-size: 14px;
-        line-height: 1.4;
-        color: #374151;
-        word-wrap: break-word;
-    }
+	.toast__message {
+		font-size: 14px;
+		line-height: 1.4;
+		color: #374151;
+		word-wrap: break-word;
+	}
 
-    .toast__close {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: #6b7280;
-        transition: all 0.2s ease;
-        border-radius: 100%;
-        padding: .5rem;
-        width: 2rem;
-        height: 2rem;
-    }
+	.toast__close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		color: #6b7280;
+		transition: all 0.2s ease;
+		border-radius: 100%;
+		padding: 0.5rem;
+		width: 2rem;
+		height: 2rem;
+	}
 }
 
 .toast__close:hover {
-    background-color: #f3f4f6;
-    color: #374151;
+	background-color: #f3f4f6;
+	color: #374151;
 }
 
 /* Animations */
 @keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
 }
 
 .toast:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }

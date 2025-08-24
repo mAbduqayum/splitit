@@ -1,92 +1,94 @@
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 html,
 body {
-/*height: 100%;*/
+	/*height: 100%;*/
 }
 
 body {
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 ul {
-    list-style: none;
+	list-style: none;
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
-    -webkit-tap-highlight-color: transparent;
+	text-decoration: none;
+	color: inherit;
+	-webkit-tap-highlight-color: transparent;
 }
 
 a,
 a:hover,
 a:focus,
 a:active {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-family: inherit;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	font-family: inherit;
 }
 
 input,
 textarea,
 select {
-    font-family: inherit;
-    font-size: 100%;
-    line-height: 1.15;
-    margin: 0;
+	font-family: inherit;
+	font-size: 100%;
+	line-height: 1.15;
+	margin: 0;
 }
 
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
+	max-width: 100%;
+	height: auto;
+	object-fit: contain;
 }
 
 button,
 button:focus {
-    border-style: none;
+	border-style: none;
 }
 
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
-    display: none;
+	display: none;
 }
 
 .material-symbols-rounded {
-    font-variation-settings: 'FILL' 0,
-    'wght' 500,
-    'GRAD' 200,
-    'opsz' 48;
+	font-variation-settings:
+		"FILL" 0,
+		"wght" 500,
+		"GRAD" 200,
+		"opsz" 48;
 }
 
 .active-route .material-symbols-rounded,
 .material-symbols-filled {
-    font-variation-settings: 'FILL' 1,
-    'wght' 500,
-    'GRAD' 200,
-    'opsz' 48;
+	font-variation-settings:
+		"FILL" 1,
+		"wght" 500,
+		"GRAD" 200,
+		"opsz" 48;
 }
 
 .spacer {
-    flex: 1 1 auto;
+	flex: 1 1 auto;
 }
