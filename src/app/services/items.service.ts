@@ -1,5 +1,6 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { BaseStorage } from "./base-storage.class";
+import { ToastService } from "../components/toast/toast.service";
 
 export interface Item {
 	id: number;
@@ -12,6 +13,6 @@ export interface Item {
 })
 export class ItemsService extends BaseStorage<Item> {
 	constructor() {
-		super("items");
+		super("items", inject(ToastService));
 	}
 }

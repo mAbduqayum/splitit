@@ -1,9 +1,9 @@
 import { Component, computed, inject } from "@angular/core";
-import { User, UsersService } from "../services/users.service";
-import { Item, ItemsService } from "../services/items.service";
 import { MatButton, MatIconButton } from "@angular/material/button";
 import { MatTableModule } from "@angular/material/table";
 import { MatIcon } from "@angular/material/icon";
+import { User, UsersService } from "../../services/users.service";
+import { Item, ItemsService } from "../../services/items.service";
 
 @Component({
 	selector: "app-summary",

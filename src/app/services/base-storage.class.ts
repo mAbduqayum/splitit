@@ -1,21 +1,39 @@
 import { effect, signal } from "@angular/core";
+import { ToastService } from "../components/toast/toast.service";
 
 export class BaseStorage<T extends { id: number }> {
 	readonly self = signal<Array<T>>([]);
 
-	protected constructor(protected readonly storageKey: string) {
-		this.storageKey = storageKey;
-		console.log(this.storageKey);
+	protected constructor(
+		protected readonly storageKey: string,
+		protected readonly toastService: ToastService,
+	) {
 		this.#sync();
 	}
 
 	#sync(): void {
-		const stored = localStorage.getItem(this.storageKey);
-		if (stored !== null) {
-			this.self.set(JSON.parse(stored));
+		try {
+			const stored = localStorage.getItem(this.storageKey);
+			if (stored !== null) {
+				this.self.set(JSON.parse(stored));
+			}
+			this.toastService.add(`Loaded ${this.storageKey} from storage`, "info");
+		} catch (e) {
+			this.toastService.add(
+				`Failed to load ${this.storageKey} from storage`,
+				"error",
+			);
 		}
+
 		effect(() => {
-			localStorage.setItem(this.storageKey, JSON.stringify(this.self()));
+			try {
+				localStorage.setItem(this.storageKey, JSON.stringify(this.self()));
+			} catch (e) {
+				this.toastService.add(
+					`Failed to save ${this.storageKey} to storage`,
+					"error",
+				);
+			}
 		});
 	}
 
@@ -45,5 +63,6 @@ export class BaseStorage<T extends { id: number }> {
 
 	clear(): void {
 		this.self.set([]);
+		this.toastService.add(`Cleared ${this.storageKey}`, "warning");
 	}
 }

@@ -10,7 +10,7 @@ export class ToastService {
 	add(message: string, type: ToastType) {
 		const toast = newToast(message, type);
 		this.toasts.update((toasts) => [...toasts, toast]);
-		setTimeout(() => this.remove(toast.id), 500000);
+		setTimeout(() => this.remove(toast.id), 3000);
 	}
 
 	remove(id: number) {
