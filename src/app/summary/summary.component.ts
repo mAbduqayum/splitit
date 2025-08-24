@@ -1,6 +1,6 @@
 import { Component, computed, inject } from "@angular/core";
-import { UsersService } from "../services/users.service";
-import { ItemsService } from "../services/items.service";
+import { User, UsersService } from "../services/users.service";
+import { Item, ItemsService } from "../services/items.service";
 import { MatButton } from "@angular/material/button";
 import { MatTableModule } from "@angular/material/table";
 
@@ -26,6 +26,14 @@ export class SummaryComponent {
 			name: Date.now().toString(),
 			price: Math.floor(Math.random() * 10),
 		});
+	}
+
+	removeItem(item: Item): void {
+		this.itemsService.remove(item);
+	}
+
+	removeUser(user: User): void {
+		this.usersService.remove(user);
 	}
 
 	addUser(): void {
