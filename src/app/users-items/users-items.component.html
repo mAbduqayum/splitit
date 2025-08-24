@@ -1,36 +1,25 @@
+<button matButton="filled" (click)="addItem()">addItem</button>
+<button matButton="filled" (click)="addUser()">addUser</button>
+<button matButton="filled" (click)="clearAll()">clear</button>
+
 <table>
     <caption>Table 1</caption>
     <thead>
-        <tr>
-            @for (item of itemsService.self(); track item.id) {
-                <th>{{ item.name }}</th>
-            }
-        </tr>
+    <tr>
+        <th>Users\Items</th>
+        @for (item of itemsService.self(); track item.id) {
+            <th>{{ item.name }}</th>
+        }
+    </tr>
     </thead>
     <tbody>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+        @for (user of usersService.self(); track user.id) {
+            <tr>
+                <td>{{ user.name }}</td>
+                @for (item of itemsService.self(); track item.id) {
+                    <td>-</td>
+                }
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,25 +1,22 @@
 import { effect, signal } from "@angular/core";
 
 export class BaseStorage<T extends { id: number }> {
-	readonly self = signal<Set<T>>(this.#load());
+	readonly self = signal<Array<T>>([]);
 
-	protected constructor(protected readonly storage_key: string) {
-		this.storage_key = storage_key;
-		effect(() => {
-			this.#save(this.self());
-		});
+	protected constructor(protected readonly storageKey: string) {
+		this.storageKey = storageKey;
+		console.log(this.storageKey);
+		this.#sync();
 	}
 
-	#load(): Set<T> {
-		const stored = localStorage.getItem(this.storage_key);
-		if (stored === null) {
-			return new Set();
+	#sync(): void {
+		const stored = localStorage.getItem(this.storageKey);
+		if (stored !== null) {
+			this.self.set(JSON.parse(stored));
 		}
-		return new Set(JSON.parse(stored));
-	}
-
-	#save(items: Set<T>): void {
-		localStorage.setItem(this.storage_key, JSON.stringify(items));
+		effect(() => {
+			localStorage.setItem(this.storageKey, JSON.stringify(this.self()));
+		});
 	}
 
 	add(itemData: Omit<T, "id">): void {
@@ -29,20 +26,24 @@ export class BaseStorage<T extends { id: number }> {
 		} as T;
 
 		this.self.update((items) => {
-			return new Set([...items, newItem]);
+			return [...items, newItem];
 		});
 	}
 
 	update(item: T): void {
 		this.self.update((items) => {
 			const filtered = [...items].filter((i) => i.id !== item.id);
-			return new Set([...filtered, item]);
+			return [...filtered, item];
 		});
 	}
 
 	remove(item: T): void {
 		this.self.update((users) => {
-			return new Set([...users].filter((u) => u.id !== item.id));
+			return [...users].filter((u) => u.id !== item.id);
 		});
+	}
+
+	clear(): void {
+		this.self.set([]);
 	}
 }
