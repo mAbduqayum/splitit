@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Create Item</h1>
 
 <mat-dialog-content>
-    <form [formGroup]="form">
+    <form [formGroup]="form" id="form-id">
         <mat-form-field>
             <mat-label>Name</mat-label>
             <input matInput formControlName="id">
@@ -12,7 +12,16 @@
         </mat-form-field>
     </form>
 </mat-dialog-content>
+
 <mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="form.value">Create</button>
+    <button matButton (click)="dialogRef.close()">Cancel</button>
+    <button
+            [disabled]="form.invalid"
+            matButton="filled"
+            (click)="add()"
+            type="submit"
+            form="form-id"
+    >
+        Create
+    </button>
 </mat-dialog-actions>

@@ -1,6 +1,13 @@
 <button matButton="filled" (click)="addItem()">addItem</button>
 <button matButton="filled" (click)="addUser()">addUser</button>
-<button matButton="filled" (click)="clearAll()">clear</button>
+<button
+        matTooltip="Alt+i"
+        matTooltipShowDelay="1000"
+        matButton="filled"
+        (click)="clearAll($event)"
+>
+    clear
+</button>
 
 <table
         mat-table

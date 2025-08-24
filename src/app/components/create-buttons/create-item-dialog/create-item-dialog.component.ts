@@ -1,9 +1,15 @@
-import { Component } from "@angular/core";
-import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { Component, inject } from "@angular/core";
+import {
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { ItemsService } from "../../../services/items.service";
 
 @Component({
 	selector: "app-create-item-dialog",
@@ -20,12 +26,18 @@ import { MatInputModule } from "@angular/material/input";
 })
 export class CreateItemDialogComponent {
 	form = new FormGroup({
-		id: new FormControl(""),
-		price: new FormControl(0),
+		id: new FormControl("", { nonNullable: true }),
+		price: new FormControl(0, { nonNullable: true }),
 	});
+	#itemsService = inject(ItemsService);
+
 	constructor(public dialogRef: MatDialogRef<CreateItemDialogComponent>) {}
 
-	onNoClick(): void {
-		this.dialogRef.close();
+	add(): void {
+		if (this.form.invalid) {
+			return;
+		}
+		this.#itemsService.add(this.form.getRawValue());
+		this.form.reset();
 	}
 }

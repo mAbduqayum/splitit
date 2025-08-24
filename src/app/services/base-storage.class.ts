@@ -18,10 +18,11 @@ export class BaseStorage<T extends ItemId> {
 		this.#toastService.add(`Cleared ${this.storageKey}`, "warning");
 	}
 
-	add(item: T): void {
+	add(item: T) {
 		const existingIds = this.store().map((item) => item.id);
 		if (existingIds.includes(item.id)) {
 			this.#toastService.add(`Item with id ${item.id} already exists`, "error");
+			throw new Error(`Item with id ${item.id} already exists`);
 		}
 		this.store.update((items) => {
 			return [...items, item];

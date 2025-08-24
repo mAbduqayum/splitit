@@ -1,7 +1,8 @@
-import { Component, computed, inject } from "@angular/core";
+import { Component, computed, HostListener, inject } from "@angular/core";
 import { MatButton, MatIconButton } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
 import { MatTableModule } from "@angular/material/table";
+import { MatTooltip } from "@angular/material/tooltip";
 import { Item, ItemsService } from "../../services/items.service";
 import { User, UsersService } from "../../services/users.service";
 import { CreateButtonsComponent } from "../create-buttons/create-buttons.component";
@@ -14,6 +15,7 @@ import { CreateButtonsComponent } from "../create-buttons/create-buttons.compone
 		MatIconButton,
 		MatIcon,
 		CreateButtonsComponent,
+		MatTooltip,
 	],
 	templateUrl: "./summary.component.html",
 	styleUrl: "./summary.component.css",
@@ -49,7 +51,10 @@ export class SummaryComponent {
 		this.usersService.add({ id: Date.now().toString() });
 	}
 
-	clearAll(): void {
+	@HostListener("document:keydown.alt.c", ["$event"])
+	clearAll($event: Event): void {
+		$event.stopPropagation();
+		// ask for confirmation
 		this.usersService.clear();
 		this.itemsService.clear();
 	}

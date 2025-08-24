@@ -1,9 +1,15 @@
-import { Component } from "@angular/core";
-import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { Component, inject } from "@angular/core";
+import {
+	FormControl,
+	FormGroup,
+	ReactiveFormsModule,
+	Validators,
+} from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { UsersService } from "../../../services/users.service";
 
 @Component({
 	selector: "app-create-user-dialog",
@@ -20,11 +26,17 @@ import { MatInputModule } from "@angular/material/input";
 })
 export class CreateUserDialogComponent {
 	form = new FormGroup({
-		id: new FormControl(""),
+		id: new FormControl("", { nonNullable: true }),
 	});
+	#usersService = inject(UsersService);
+
 	constructor(public dialogRef: MatDialogRef<CreateUserDialogComponent>) {}
 
-	onNoClick(): void {
-		this.dialogRef.close();
+	add(): void {
+		if (this.form.invalid) {
+			return;
+		}
+		this.#usersService.add(this.form.getRawValue());
+		this.form.reset();
 	}
 }
