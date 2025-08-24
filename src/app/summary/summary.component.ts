@@ -5,12 +5,12 @@ import { MatButton } from "@angular/material/button";
 import { MatTableModule } from "@angular/material/table";
 
 @Component({
-	selector: "app-users-items",
+	selector: "summary",
 	imports: [MatButton, MatTableModule],
-	templateUrl: "./users-items.component.html",
-	styleUrl: "./users-items.component.css",
+	templateUrl: "./summary.component.html",
+	styleUrl: "./summary.component.css",
 })
-export class UsersItemsComponent {
+export class SummaryComponent {
 	usersService = inject(UsersService);
 	itemsService = inject(ItemsService);
 	summaries = ["subTotal", "tax", "tip", "total"];
@@ -27,9 +27,11 @@ export class UsersItemsComponent {
 			price: Math.floor(Math.random() * 10),
 		});
 	}
+
 	addUser(): void {
 		this.usersService.add({ name: Date.now().toString() });
 	}
+
 	clearAll(): void {
 		this.usersService.clear();
 		this.itemsService.clear();

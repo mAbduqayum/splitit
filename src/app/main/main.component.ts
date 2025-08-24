@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
-import { UsersItemsComponent } from "../users-items/users-items.component";
+import { SummaryComponent } from "../summary/summary.component";
 
 @Component({
 	selector: "app-main",
-	imports: [UsersItemsComponent],
+	imports: [SummaryComponent],
 	templateUrl: "./main.component.html",
 	styleUrl: "./main.component.css",
 })

@@ -16,7 +16,7 @@
     @for (item of itemsService.self(); track item.id) {
         <ng-container [matColumnDef]="item.name">
             <th mat-header-cell *matHeaderCellDef>{{ item.name }}</th>
-            <td mat-cell *matCellDef="let element">-</td>
+            <td mat-cell *matCellDef="let element">{{ item.price }}</td>
         </ng-container>
     }
 
