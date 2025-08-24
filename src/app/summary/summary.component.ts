@@ -6,7 +6,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatIcon } from "@angular/material/icon";
 
 @Component({
-	selector: "summary",
+	selector: "app-summary",
 	imports: [MatButton, MatTableModule, MatIconButton, MatIcon],
 	templateUrl: "./summary.component.html",
 	styleUrl: "./summary.component.css",
