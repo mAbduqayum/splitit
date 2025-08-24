@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { SummaryComponent } from "../summary/summary.component";
+import { SummaryComponent } from "../components/summary/summary.component";
 
 @Component({
 	selector: "app-main",
