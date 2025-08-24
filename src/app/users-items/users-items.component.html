@@ -2,24 +2,31 @@
 <button matButton="filled" (click)="addUser()">addUser</button>
 <button matButton="filled" (click)="clearAll()">clear</button>
 
-<table>
-    <caption>Table 1</caption>
-    <thead>
-    <tr>
-        <th>Users\Items</th>
-        @for (item of itemsService.self(); track item.id) {
-            <th>{{ item.name }}</th>
-        }
-    </tr>
-    </thead>
-    <tbody>
-        @for (user of usersService.self(); track user.id) {
-            <tr>
-                <td>{{ user.name }}</td>
-                @for (item of itemsService.self(); track item.id) {
-                    <td>-</td>
-                }
-            </tr>
-        }
-    </tbody>
+<table
+        mat-table
+        [dataSource]="usersService.self()"
+>
+    <!-- User name Definition -->
+    <ng-container matColumnDef="user-name">
+        <th mat-header-cell *matHeaderCellDef>Users\Items</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Items Definition -->
+    @for (item of itemsService.self(); track item.id) {
+        <ng-container [matColumnDef]="item.name">
+            <th mat-header-cell *matHeaderCellDef>{{ item.name }}</th>
+            <td mat-cell *matCellDef="let element">-</td>
+        </ng-container>
+    }
+
+    @for (summary of summaries; track summary) {
+        <ng-container [matColumnDef]="summary">
+            <th mat-header-cell *matHeaderCellDef>{{ summary }}</th>
+            <td mat-cell *matCellDef="let element">-</td>
+        </ng-container>
+    }
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
 </table>

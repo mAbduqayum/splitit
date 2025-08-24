@@ -1,17 +1,25 @@
-import { Component, inject } from "@angular/core";
+import { Component, computed, inject } from "@angular/core";
 import { UsersService } from "../services/users.service";
 import { ItemsService } from "../services/items.service";
 import { MatButton } from "@angular/material/button";
+import { MatTableModule } from "@angular/material/table";
 
 @Component({
 	selector: "app-users-items",
-	imports: [MatButton],
+	imports: [MatButton, MatTableModule],
 	templateUrl: "./users-items.component.html",
 	styleUrl: "./users-items.component.css",
 })
 export class UsersItemsComponent {
 	usersService = inject(UsersService);
 	itemsService = inject(ItemsService);
+	summaries = ["subTotal", "tax", "tip", "total"];
+
+	displayedColumns = computed(() => [
+		"user-name",
+		...this.itemsService.self().map((i) => i.name),
+		...this.summaries,
+	]);
 
 	addItem(): void {
 		this.itemsService.add({ name: Date.now().toString(), price: 0 });
