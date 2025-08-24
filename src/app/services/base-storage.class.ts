@@ -1,40 +1,17 @@
-import { effect, signal } from "@angular/core";
+import { effect, inject, signal } from "@angular/core";
 import { ToastService } from "../components/toast/toast.service";
 
 export class BaseStorage<T extends { id: number }> {
 	readonly self = signal<Array<T>>([]);
+	#toastService = inject(ToastService);
 
-	protected constructor(
-		protected readonly storageKey: string,
-		protected readonly toastService: ToastService,
-	) {
+	protected constructor(protected readonly storageKey: string) {
 		this.#sync();
 	}
 
-	#sync(): void {
-		try {
-			const stored = localStorage.getItem(this.storageKey);
-			if (stored !== null) {
-				this.self.set(JSON.parse(stored));
-			}
-			this.toastService.add(`Loaded ${this.storageKey} from storage`, "info");
-		} catch (e) {
-			this.toastService.add(
-				`Failed to load ${this.storageKey} from storage`,
-				"error",
-			);
-		}
-
-		effect(() => {
-			try {
-				localStorage.setItem(this.storageKey, JSON.stringify(this.self()));
-			} catch (e) {
-				this.toastService.add(
-					`Failed to save ${this.storageKey} to storage`,
-					"error",
-				);
-			}
-		});
+	clear(): void {
+		this.self.set([]);
+		this.#toastService.add(`Cleared ${this.storageKey}`, "warning");
 	}
 
 	add(itemData: Omit<T, "id">): void {
@@ -61,8 +38,29 @@ export class BaseStorage<T extends { id: number }> {
 		});
 	}
 
-	clear(): void {
-		this.self.set([]);
-		this.toastService.add(`Cleared ${this.storageKey}`, "warning");
+	#sync(): void {
+		try {
+			const stored = localStorage.getItem(this.storageKey);
+			if (stored !== null) {
+				this.self.set(JSON.parse(stored));
+			}
+			this.#toastService.add(`Loaded ${this.storageKey} from storage`, "info");
+		} catch (e) {
+			this.#toastService.add(
+				`Failed to load ${this.storageKey} from storage`,
+				"error",
+			);
+		}
+
+		effect(() => {
+			try {
+				localStorage.setItem(this.storageKey, JSON.stringify(this.self()));
+			} catch (e) {
+				this.#toastService.add(
+					`Failed to save ${this.storageKey} to storage`,
+					"error",
+				);
+			}
+		});
 	}
 }

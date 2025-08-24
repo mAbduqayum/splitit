@@ -13,6 +13,6 @@ export interface Item {
 })
 export class ItemsService extends BaseStorage<Item> {
 	constructor() {
-		super("items", inject(ToastService));
+		super("items");
 	}
 }

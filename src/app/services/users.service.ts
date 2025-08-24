@@ -12,6 +12,6 @@ export interface User {
 })
 export class UsersService extends BaseStorage<User> {
 	constructor() {
-		super("users", inject(ToastService));
+		super("users");
 	}
 }
