@@ -8,7 +8,9 @@
 >
     <!-- User name Definition -->
     <ng-container matColumnDef="user-name">
-        <th mat-header-cell *matHeaderCellDef>Users\Items</th>
+        <th mat-header-cell *matHeaderCellDef>
+            <app-create-buttons />
+        </th>
         <td mat-cell *matCellDef="let element" class="user-cell">
             {{ element.name }}
             <button matIconButton (click)="removeUser(element)" class="remove-btn">

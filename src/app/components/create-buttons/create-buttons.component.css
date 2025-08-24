@@ -1,8 +1,13 @@
+:host {
+    --width: 150px;
+    --height: 60px;
+    --span: 8px;
+}
+
 .create-button {
     position: relative;
-    width: 60px;
-    /*width: 60px;*/
-    aspect-ratio: 1;
+    width: var(--width);
+    height: var(--height);
 
     div {
         position: absolute;

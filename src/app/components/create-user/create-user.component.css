@@ -1,6 +1,6 @@
 .triangle-button {
-    width: 60px;
-    aspect-ratio: 1;
+    width: var(--width);
+    height: var(--height);
     background: linear-gradient(45deg, #ff6b6b, #ee5a24);
     clip-path: polygon(0 0, 100% 100%, 0 100%);
     border: none;
@@ -11,10 +11,31 @@
     /*justify-content: flex-start;*/
     padding: 1rem;
     transition: all 0.3s ease;
+
+    span {
+        visibility: visible;
+        position: absolute;
+        left: var(--span);
+        bottom: var(--span);
+    }
+
+    .mat-icon {
+        visibility: hidden;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        position: absolute;
+        left: var(--span);
+        bottom: var(--span);
+    }
+
 }
 
 .triangle-button:hover {
     filter: brightness(1.1);
+
+    span {
+        visibility: hidden;
+    }
 
     .mat-icon {
         visibility: visible;
@@ -25,11 +46,3 @@
     transform: scale(0.95);
 }
 
-.mat-icon {
-    visibility: hidden;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    position: absolute;
-    left: 6px;
-    bottom: 6px;
-}

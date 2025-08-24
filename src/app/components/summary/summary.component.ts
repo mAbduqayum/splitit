@@ -4,10 +4,17 @@ import { MatTableModule } from "@angular/material/table";
 import { MatIcon } from "@angular/material/icon";
 import { User, UsersService } from "../../services/users.service";
 import { Item, ItemsService } from "../../services/items.service";
+import { CreateButtonsComponent } from "../create-buttons/create-buttons.component";
 
 @Component({
 	selector: "app-summary",
-	imports: [MatButton, MatTableModule, MatIconButton, MatIcon],
+	imports: [
+		MatButton,
+		MatTableModule,
+		MatIconButton,
+		MatIcon,
+		CreateButtonsComponent,
+	],
 	templateUrl: "./summary.component.html",
 	styleUrl: "./summary.component.css",
 })
