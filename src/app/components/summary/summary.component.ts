@@ -54,8 +54,9 @@ export class SummaryComponent {
 	@HostListener("document:keydown.alt.c", ["$event"])
 	clearAll($event: Event): void {
 		$event.stopPropagation();
-		// ask for confirmation
-		this.usersService.clear();
-		this.itemsService.clear();
+		if (confirm("Are you sure you want to clear all users and items?")) {
+			this.usersService.clear();
+			this.itemsService.clear();
+		}
 	}
 }
