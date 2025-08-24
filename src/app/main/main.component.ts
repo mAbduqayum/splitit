@@ -6,5 +6,6 @@ import { SummaryComponent } from "../components/summary/summary.component";
 	imports: [SummaryComponent],
 	templateUrl: "./main.component.html",
 	styleUrl: "./main.component.css",
+	standalone: true,
 })
 export class MainComponent {}

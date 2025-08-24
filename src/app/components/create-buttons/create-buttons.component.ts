@@ -7,5 +7,6 @@ import { CreateUserComponent } from "./create-user/create-user.component";
 	imports: [CreateItemComponent, CreateUserComponent],
 	templateUrl: "./create-buttons.component.html",
 	styleUrl: "./create-buttons.component.css",
+	standalone: true,
 })
 export class CreateButtonsComponent {}

@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Create Item</h1>
+
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="id">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Price</mat-label>
+            <input matInput formControlName="price" type="number">
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="form.value">Create</button>
+</mat-dialog-actions>

@@ -17,6 +17,7 @@ import { CreateButtonsComponent } from "../create-buttons/create-buttons.compone
 	],
 	templateUrl: "./summary.component.html",
 	styleUrl: "./summary.component.css",
+	standalone: true,
 })
 export class SummaryComponent {
 	usersService = inject(UsersService);
