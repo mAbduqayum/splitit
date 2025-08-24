@@ -22,7 +22,10 @@ export class UsersItemsComponent {
 	]);
 
 	addItem(): void {
-		this.itemsService.add({ name: Date.now().toString(), price: 0 });
+		this.itemsService.add({
+			name: Date.now().toString(),
+			price: Math.floor(Math.random() * 10),
+		});
 	}
 	addUser(): void {
 		this.usersService.add({ name: Date.now().toString() });
