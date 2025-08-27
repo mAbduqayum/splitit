@@ -1,11 +1,13 @@
 import { Component, computed, HostListener, inject } from "@angular/core";
 import { MatButton, MatIconButton } from "@angular/material/button";
+import { MatDialog } from "@angular/material/dialog";
 import { MatIcon } from "@angular/material/icon";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
 import { Item, ItemsService } from "../../services/items.service";
 import { User, UsersService } from "../../services/users.service";
 import { CreateButtonsComponent } from "../create-buttons/create-buttons.component";
+import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 
 @Component({
 	selector: "app-summary",
@@ -24,6 +26,7 @@ import { CreateButtonsComponent } from "../create-buttons/create-buttons.compone
 export class SummaryComponent {
 	usersService = inject(UsersService);
 	itemsService = inject(ItemsService);
+	dialog = inject(MatDialog);
 	summaries = ["subTotal", "tax", "tip", "total"];
 
 	displayedColumns = computed(() => [
@@ -54,9 +57,20 @@ export class SummaryComponent {
 	@HostListener("document:keydown.alt.c", ["$event"])
 	clearAll($event: Event): void {
 		$event.stopPropagation();
-		if (confirm("Are you sure you want to clear all users and items?")) {
-			this.usersService.clear();
-			this.itemsService.clear();
-		}
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+			data: {
+				title: "Clear All Data",
+				message: "Are you sure you want to clear all users and items?",
+				confirmText: "Clear",
+				cancelText: "Cancel",
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this.usersService.clear();
+				this.itemsService.clear();
+			}
+		});
 	}
 }
