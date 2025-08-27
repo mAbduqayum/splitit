@@ -6,8 +6,8 @@ import { MatTableModule } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
 import { Item, ItemsService } from "../../services/items.service";
 import { User, UsersService } from "../../services/users.service";
-import { CreateButtonsComponent } from "../create-buttons/create-buttons.component";
 import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
+import { CreateButtonsComponent } from "../create-buttons/create-buttons.component";
 
 @Component({
 	selector: "app-summary",

@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
