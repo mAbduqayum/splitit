@@ -1,5 +1,4 @@
-import { Injectable, inject } from "@angular/core";
-import { ToastService } from "../components/toast/toast.service";
+import { Injectable } from "@angular/core";
 import { BaseStorage } from "./base-storage.class";
 
 export interface User {

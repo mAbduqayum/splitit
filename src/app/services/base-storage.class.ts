@@ -49,7 +49,7 @@ export class BaseStorage<T extends ItemId> {
 				this.store.set(JSON.parse(stored));
 			}
 			this.#toastService.add(`Loaded ${this.storageKey} from storage`, "info");
-		} catch (e) {
+		} catch (_) {
 			this.#toastService.add(
 				`Failed to load ${this.storageKey} from storage`,
 				"error",
@@ -59,7 +59,7 @@ export class BaseStorage<T extends ItemId> {
 		effect(() => {
 			try {
 				localStorage.setItem(this.storageKey, JSON.stringify(this.store()));
-			} catch (e) {
+			} catch (_) {
 				this.#toastService.add(
 					`Failed to save ${this.storageKey} to storage`,
 					"error",
