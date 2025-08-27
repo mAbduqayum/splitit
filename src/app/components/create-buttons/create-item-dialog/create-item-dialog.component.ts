@@ -1,10 +1,5 @@
-import { Component, inject } from "@angular/core";
-import {
-	FormControl,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators,
-} from "@angular/forms";
+import { Component, inject, ViewChild, ElementRef } from "@angular/core";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -25,6 +20,8 @@ import { ItemsService } from "../../../services/items.service";
 	],
 })
 export class CreateItemDialogComponent {
+	@ViewChild("nameInput") nameInput!: ElementRef<HTMLInputElement>;
+
 	form = new FormGroup({
 		id: new FormControl("", { nonNullable: true }),
 		price: new FormControl(0, { nonNullable: true }),
@@ -39,5 +36,6 @@ export class CreateItemDialogComponent {
 		}
 		this.#itemsService.add(this.form.getRawValue());
 		this.form.reset();
+		setTimeout(() => this.nameInput.nativeElement.focus(), 0);
 	}
 }
